@@ -1,0 +1,8 @@
+{
+  "name": "jobboard-frontend",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite",
+  "id": "3b87fb3c"
+}
