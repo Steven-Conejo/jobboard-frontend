@@ -1,88 +1,109 @@
 <template>
-  <div class="home-container">
-    <div class="top-bar">
-      <img src="@/assets/logo.png" alt="Logo" class="logo" />
-      <button @click="logout" class="logout-button">
-        <span>🔓</span> Cerrar sesión
-      </button>
-    </div>
-
-    <h2>Buscar Empleo</h2>
-
-    <div class="form-group">
-      <label class="icon-label">
-        <span class="emoji">💼</span> Categoría
-      </label>
-      <select class="select">
-        <option>Recepcionista</option>
-        <option>Contador</option>
-        <option>Asistente administrativo</option>
-        <option>Ingeniero industrial</option>
-        <option>Técnico en electrónica</option>
-        <option>Desarrollador web</option>
-        <option>Secretaria</option>
-        <option>Diseñador gráfico</option>
-        <option>Operario de producción</option>
-        <option>Agente de servicio al cliente</option>
-        <option>Auxiliar contable</option>
-        <option>Mecánico automotriz</option>
-        <option>Cocinero</option>
-        <option>Guardia de seguridad</option>
-        <option>Profesor de inglés</option>
-        <option>Auxiliar de bodega</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label class="icon-label">
-        <span class="emoji">📍</span> Lugar
-      </label>
-      <select class="select">
-        <option>San José</option>
-        <option>Alajuela</option>
-        <option>Heredia</option>
-        <option>Cartago</option>
-        <option>Guanacaste</option>
-        <option>Puntarenas</option>
-        <option>Limón</option>
-      </select>
-    </div>
-
-    <h3 class="subtitle">Últimas Búsquedas</h3>
-    <div class="recent-searches">
-      <div class="search-item">
-        <span class="emoji">🕒</span> Sin búsquedas recientes
+  <ion-page>
+    <div class="home-container">
+      <div class="top-bar">
+        <img src="@/assets/logo.png" alt="Logo" class="logo" />
+        <button @click="logout" class="logout-button">
+          <span>🔓</span> Cerrar sesión
+        </button>
       </div>
-      <div class="search-item">
-        <span class="emoji">🕒</span> Sin búsquedas recientes
-      </div>
-      <div class="search-item">
-        <span class="emoji">🕒</span> Sin búsquedas recientes
-      </div>
-    </div>
 
-    <div class="info-section">
-      <h3>Potencia tu desarrollo profesional</h3>
-      <p>
-        Consejos, guías y recursos para encontrar antes el empleo de tus
-        sueños que encaje contigo. Mira para más información
-      </p>
-      <img src="@/assets/imagenmujer.png" alt="Desarrollo" class="info-img" />
-      <p>
-        Copyright 2025 - 2025<br />
-        Para más información consulte el siguiente enlace
-      </p>
-      <button @click="goToSomos" class="btn-somos">Quienes Somos</button>
+      <h2>Buscar Empleo</h2>
+
+      <!-- Campo Categoría con input y autocompletado -->
+      <div class="form-group">
+        <label class="icon-label">
+          <span class="emoji">💼</span> Categoría
+        </label>
+        <div class="autocomplete-container">
+          <input
+            type="text"
+            v-model="categoriaInput"
+            @input="filterCategorias"
+            @focus="showCategoriaOptions = true"
+            @blur="hideCategoriaOptions"
+            class="autocomplete-input"
+            placeholder="Escribe o selecciona una categoría"
+          />
+          <div v-if="showCategoriaOptions && filteredCategorias.length" class="autocomplete-list">
+            <div
+              class="autocomplete-item"
+              v-for="(categoria, index) in filteredCategorias"
+              :key="index"
+              @mousedown.prevent="selectCategoria(categoria)"
+            >
+              {{ categoria }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Campo Lugar como en el código original -->
+      <ion-item class="form-group">
+        <ion-label class="icon-label" position="stacked">
+          <span class="emoji">📍</span> Lugar
+        </ion-label>
+        <ion-select interface="action-sheet" placeholder="Selecciona un lugar">
+          <ion-select-option value="San José">San José</ion-select-option>
+          <ion-select-option value="Alajuela">Alajuela</ion-select-option>
+          <ion-select-option value="Heredia">Heredia</ion-select-option>
+          <ion-select-option value="Cartago">Cartago</ion-select-option>
+          <ion-select-option value="Guanacaste">Guanacaste</ion-select-option>
+          <ion-select-option value="Puntarenas">Puntarenas</ion-select-option>
+          <ion-select-option value="Limón">Limón</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <h3 class="subtitle">Últimas Búsquedas</h3>
+      <div class="recent-searches">
+        <div class="search-item">
+          <span class="emoji">🕒</span> Sin búsquedas recientes
+        </div>
+        <div class="search-item">
+          <span class="emoji">🕒</span> Sin búsquedas recientes
+        </div>
+        <div class="search-item">
+          <span class="emoji">🕒</span> Sin búsquedas recientes
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h3>Potencia tu desarrollo profesional</h3>
+        <p>
+          Consejos, guías y recursos para encontrar antes el empleo de tus
+          sueños que encaje contigo. Mira para más información
+        </p>
+        <img src="@/assets/imagenmujer.png" alt="Desarrollo" class="info-img" />
+        <p>
+          Copyright 2025 - 2025<br />
+          Para más información consulte el siguiente enlace
+        </p>
+        <button @click="goToSomos" class="btn-somos">Quienes Somos</button>
+      </div>
     </div>
-  </div>
+  </ion-page>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
+import {
+  IonPage,
+  IonItem,
+  IonLabel,
+  IonSelect,
+  IonSelectOption
+} from '@ionic/vue'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'Home',
+  components: {
+    IonPage,
+    IonItem,
+    IonLabel,
+    IonSelect,
+    IonSelectOption
+  },
   setup() {
     const router = useRouter()
 
@@ -94,7 +115,57 @@ export default defineComponent({
       router.push('/somos')
     }
 
-    return { logout, goToSomos }
+    const categorias = [
+      'Recepcionista',
+      'Contador',
+      'Asistente administrativo',
+      'Ingeniero industrial',
+      'Técnico en electrónica',
+      'Desarrollador web',
+      'Secretaria',
+      'Diseñador gráfico',
+      'Operario de producción',
+      'Agente de servicio al cliente',
+      'Auxiliar contable',
+      'Mecánico automotriz',
+      'Cocinero',
+      'Guardia de seguridad',
+      'Profesor de inglés',
+      'Auxiliar de bodega',
+    ]
+
+    const categoriaInput = ref('')
+    const filteredCategorias = ref<string[]>(categorias)
+    const showCategoriaOptions = ref(false)
+
+    const filterCategorias = () => {
+      const search = categoriaInput.value.toLowerCase()
+      filteredCategorias.value = categorias.filter((c) =>
+        c.toLowerCase().includes(search)
+      )
+    }
+
+    const selectCategoria = (categoria: string) => {
+      categoriaInput.value = categoria
+      showCategoriaOptions.value = false
+    }
+
+    const hideCategoriaOptions = () => {
+      setTimeout(() => {
+        showCategoriaOptions.value = false
+      }, 100)
+    }
+
+    return {
+      logout,
+      goToSomos,
+      categoriaInput,
+      filteredCategorias,
+      filterCategorias,
+      selectCategoria,
+      showCategoriaOptions,
+      hideCategoriaOptions,
+    }
   },
 })
 </script>
@@ -134,6 +205,7 @@ h2 {
 
 .form-group {
   margin-bottom: 1rem;
+  position: relative;
 }
 
 .icon-label {
@@ -147,12 +219,41 @@ h2 {
   margin-right: 0.5rem;
 }
 
-.select {
+.autocomplete-container {
+  position: relative;
+}
+
+.autocomplete-input {
   width: 100%;
   padding: 0.4rem;
   font-size: 0.9rem;
   border-radius: 8px;
   border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.autocomplete-list {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  max-height: 160px;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.autocomplete-item {
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.autocomplete-item:hover {
+  background-color: #f0f0f0;
 }
 
 .subtitle {
@@ -199,3 +300,5 @@ h2 {
   color: black;
 }
 </style>
+
+

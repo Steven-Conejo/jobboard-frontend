@@ -1,8 +1,11 @@
 <template>
+  <ion-page>
     <div class="dashboard-container">
       <div class="top-bar">
         <img src="@/assets/logo.png" alt="Logo" class="logo" />
-        <button @click="logout" class="logout-button">Cerrar sesión</button>
+        <button @click="logout" class="logout-button">
+          <span>🔓</span> Cerrar sesión
+        </button>
       </div>
   
       <h2 class="headline">¡Publica ofertas gratis!</h2>
@@ -70,150 +73,151 @@
         </div>
       </div>
     </div>
-  </template>
+  </ion-page>
+</template>
   
-  <script lang="ts">
-  import { defineComponent } from 'vue'
-  import { useRouter } from 'vue-router'
-  
-  export default defineComponent({
-    name: 'DashboardReclutadores',
-    setup() {
-      const router = useRouter()
-  
-      const logout = () => {
-        router.push('/login')
-      }
-  
-      return { logout }
+<script lang="ts">
+import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
+import { IonPage } from '@ionic/vue'
+
+export default defineComponent({
+  name: 'DashboardReclutadores',
+  components: { IonPage },
+  setup() {
+    const router = useRouter()
+
+    const logout = () => {
+      router.push('/login')
     }
-  })
-  </script>
-  
-  <style scoped>
-  .dashboard-container {
-    padding: 1.5rem;
-    max-width: 600px;
-    margin: 0 auto;
-    font-family: sans-serif;
-    overflow-y: auto;
-    height: 100vh;
-    box-sizing: border-box;
+
+    return { logout }
   }
+})
+</script>
   
-  .top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .logo {
-    width: 60px;
-  }
-  
-  .logout-button {
-    background: none;
-    color: #e91e63;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .headline {
-    text-align: center;
-    margin-top: 1.5rem;
-    font-size: 1.2rem;
-  }
-  
-  .subtext {
-    text-align: center;
-    font-size: 0.95rem;
-    margin: 0.8rem 0;
-  }
-  
-  .publish-button {
-    display: block;
-    margin: 0 auto 1.5rem;
-    background-color: #a8e6cf;
-    color: black;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 20px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .steps-section {
-    display: flex;
-    gap: 1rem;
-    align-items: stretch;
-    margin-bottom: 1.5rem;
-  }
-  
-  .steps-list {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-  
-  .step-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-  
-  .step-number {
-    background-color: #1a73e8;
-    color: white;
-    font-size: 0.8rem;
-    font-weight: bold;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 20px;
-    flex-shrink: 0;
-  }
-  
-  .step-text {
-    font-size: 0.85rem;
-  }
-  
-  .step-image img {
-    height: 100%;
-    max-height: 210px;
-    width: auto;
-    object-fit: cover;
-  }
-  
-  .info-section {
-    margin-top: 2rem;
-  }
-  
-  .info-section h3 {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .info-section p {
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-  }
-  
-  .info-block {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.2rem;
-    gap: 1rem;
-  }
-  
-  .info-block img {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-  }
-  </style>
-  
-  
+<style scoped>
+.dashboard-container {
+  padding: 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: sans-serif;
+  overflow-y: auto;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  width: 60px;
+}
+
+.logout-button {
+  background: none;
+  color: #e91e63;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.headline {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.subtext {
+  text-align: center;
+  font-size: 0.95rem;
+  margin: 0.8rem 0;
+}
+
+.publish-button {
+  display: block;
+  margin: 0 auto 1.5rem;
+  background-color: #a8e6cf;
+  color: black;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.steps-section {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+  margin-bottom: 1.5rem;
+}
+
+.steps-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.step-number {
+  background-color: #1a73e8;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 20px;
+  flex-shrink: 0;
+}
+
+.step-text {
+  font-size: 0.85rem;
+}
+
+.step-image img {
+  height: 100%;
+  max-height: 210px;
+  width: auto;
+  object-fit: cover;
+}
+
+.info-section {
+  margin-top: 2rem;
+}
+
+.info-section h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.info-section p {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.info-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  gap: 1rem;
+}
+
+.info-block img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+</style>
