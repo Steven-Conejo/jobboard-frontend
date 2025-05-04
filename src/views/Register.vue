@@ -1,59 +1,118 @@
 <template>
-  <div class="register-container">
-    <img src="@/assets/logo.png" alt="Logo" class="logo" />
-    <h1 class="title">Crear una cuenta</h1>
+  <ion-page>
+    <div class="register-container">
+      <img src="@/assets/logo.png" alt="Logo" class="logo" />
+      <h1 class="title">Crear una cuenta</h1>
 
-    <div class="form-wrapper">
-      <form class="register-form">
-        <label for="email">E-mail:</label>
-        <input id="email" type="email" placeholder="Escriba su correo electrónico" class="input" />
+      <div class="form-wrapper">
+        <form class="register-form" @submit.prevent="handleRegister">
+          <label for="email">E-mail:</label>
+          <input v-model="email" id="email" type="email" placeholder="Escriba su correo electrónico" class="input" />
 
-        <label for="password">Contraseña:</label>
-        <input id="password" type="password" placeholder="Escriba su contraseña" class="input" />
+          <label for="password">Contraseña:</label>
+          <input v-model="password" id="password" type="password" placeholder="Escriba su contraseña" class="input" />
 
-        <label for="confirm-password">Confirmar Contraseña:</label>
-        <input id="confirm-password" type="password" placeholder="Escriba su contraseña" class="input" />
+          <label for="confirmPassword">Confirmar Contraseña:</label>
+          <input v-model="confirmPassword" id="confirmPassword" type="password" placeholder="Confirme su contraseña" class="input" />
 
-        <label for="nombre">Nombre:</label>
-        <input id="nombre" type="text" placeholder="Digite su nombre" class="input" />
+          <label for="nombre">Nombre:</label>
+          <input v-model="nombre" id="nombre" type="text" placeholder="Digite su nombre" class="input" />
 
-        <label for="apellidos">Apellidos:</label>
-        <input id="apellidos" type="text" placeholder="Digite sus dos apellidos" class="input" />
+          <label for="apellidos">Apellidos:</label>
+          <input v-model="apellidos" id="apellidos" type="text" placeholder="Digite sus dos apellidos" class="input" />
 
-        <label>Deseas registrarte como:</label>
-        <div class="role-options">
-          <label>
-            <input type="radio" name="role" value="candidato" checked />
-            Candidato
-          </label>
-          <label>
-            <input type="radio" name="role" value="reclutador" />
-            Reclutador
-          </label>
-        </div>
+          <label>Deseas registrarte como:</label>
+          <div class="role-options">
+            <label>
+              <input v-model="rol" type="radio" name="role" value="candidato" />
+              Candidato
+            </label>
+            <label>
+              <input v-model="rol" type="radio" name="role" value="reclutador" />
+              Reclutador
+            </label>
+          </div>
 
-        <button type="submit" class="register-button">Registrar</button>
-      </form>
+          <button type="submit" class="register-button">Registrar</button>
+        </form>
 
-      <p class="help-link">
-        ¿Necesitas ayuda en algo?
-        <a href="#" class="help-anchor">envíanos un mensaje</a>
-      </p>
-
-      <p class="login-link">
-        ¿Ya tienes una cuenta?
-        <router-link to="/login">Inicia sesión</router-link>
-      </p>
+        <p class="login-link">
+          ¿Ya tienes una cuenta?<br />
+          <router-link to="/login">Inicia sesión</router-link>
+        </p>
+      </div>
     </div>
-  </div>
+  </ion-page>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { alertController, IonPage } from '@ionic/vue'
 
 export default defineComponent({
   name: 'Register',
-});
+  components: { IonPage },
+  setup() {
+    const email = ref('')
+    const password = ref('')
+    const confirmPassword = ref('')
+    const nombre = ref('')
+    const apellidos = ref('')
+    const rol = ref('candidato')
+
+    const router = useRouter()
+
+    const showAlert = async (title: string, message: string) => {
+      const alert = await alertController.create({
+        header: title,
+        message: message,
+        buttons: ['OK']
+      })
+      await alert.present()
+    }
+
+    const validateEmail = (email: string) => {
+      const re = /\S+@\S+\.\S+/
+      return re.test(email)
+    }
+
+    const handleRegister = async () => {
+      if (!email.value || !password.value || !confirmPassword.value || !nombre.value || !apellidos.value) {
+        await showAlert('⚠️ Campos vacíos', 'Por favor llena todos los campos para continuar.')
+        return
+      }
+
+      if (!validateEmail(email.value)) {
+        await showAlert('📧 Correo inválido', 'Por favor escribe un correo electrónico válido.')
+        return
+      }
+
+      if (password.value !== confirmPassword.value) {
+        await showAlert('🔁 Contraseñas no coinciden', 'La contraseña y su confirmación deben ser iguales.')
+        return
+      }
+
+      await showAlert('✅ Registro exitoso', `Bienvenido/a, ${nombre.value} 🎉`)
+
+      if (rol.value === 'candidato') {
+        router.push('/dashboard-candidatos')
+      } else {
+        router.push('/dashboard-reclutadores') 
+      }
+    }
+
+    return {
+      email,
+      password,
+      confirmPassword,
+      nombre,
+      apellidos,
+      rol,
+      handleRegister
+    }
+  }
+})
 </script>
 
 <style scoped>
@@ -62,6 +121,8 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   padding: 2rem;
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 .logo {
@@ -132,21 +193,11 @@ export default defineComponent({
 .register-button:hover {
   background-color: #333;
 }
-
-.help-link,
 .login-link {
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   margin-top: 1rem;
-}
-
-.help-anchor {
-  color: #4f46e5;
-  text-decoration: none;
-  margin-left: 0.2rem;
-}
-
-.help-anchor:hover {
-  text-decoration: underline;
+  color: #000; 
 }
 </style>
+
