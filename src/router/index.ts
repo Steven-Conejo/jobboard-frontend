@@ -32,7 +32,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/oferta',
-    component: () => import('@/views/Oferta.vue') // <-- Vista nueva agregada
+    component: () => import('@/views/Oferta.vue') 
   },
 
   {

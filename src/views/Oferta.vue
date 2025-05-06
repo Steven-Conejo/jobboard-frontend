@@ -27,8 +27,6 @@
             <ion-label position="stacked">Salario</ion-label>
             <ion-input v-model="oferta.salario" type="number" required></ion-input>
           </ion-item>
-  
-          <!-- Campo de Categoría con autocompletado -->
           <div class="form-group">
             <ion-label class="ion-padding-start">Categoría</ion-label>
             <div class="autocomplete-container">

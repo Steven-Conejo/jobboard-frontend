@@ -40,8 +40,6 @@ export default defineComponent({
         await showAlert('📧 Correo inválido', 'Ingresa un correo electrónico válido.')
         return
       }
-
-      // Aquí iría tu lógica de autenticación real
       await showAlert('✅ Inicio de sesión exitoso', `Bienvenido de nuevo, ${email.value.split('@')[0]} 👋`)
     }
 

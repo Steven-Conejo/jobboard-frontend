@@ -9,8 +9,6 @@
       </div>
 
       <h2>Buscar Empleo</h2>
-
-      <!-- Campo Categoría con input y autocompletado -->
       <div class="form-group">
         <label class="icon-label">
           <span class="emoji">💼</span> Categoría
@@ -37,8 +35,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Campo Lugar como en el código original -->
       <ion-item class="form-group">
         <ion-label class="icon-label" position="stacked">
           <span class="emoji">📍</span> Lugar
