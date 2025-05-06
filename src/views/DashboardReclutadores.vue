@@ -7,14 +7,15 @@
           <span>🔓</span> Cerrar sesión
         </button>
       </div>
-  
+
       <h2 class="headline">¡Publica ofertas gratis!</h2>
       <p class="subtext">
         Ahorra costos y tiempo en tus procesos de selección y consigue el candidato ideal de forma rápida y fácil
       </p>
-  
-      <button class="publish-button">Publicar una Oferta</button>
-  
+
+      <button class="publish-button" @click="irAOferta">Publicar una Oferta</button>
+      <button class="history-button">Ver historial de ofertas</button>
+
       <div class="steps-section">
         <div class="steps-list">
           <div class="step-item">
@@ -43,11 +44,11 @@
           <img src="@/assets/infoimagen.png" alt="Pasos" />
         </div>
       </div>
-  
+
       <div class="info-section">
         <h3>Aquí encontrarás la persona que necesitas sea cual sea el empleo</h3>
         <p>Localiza los mejores candidatos en la web de empleo líder en Latinoamérica</p>
-  
+
         <div class="info-block">
           <p>
             Atrae al candidato que necesitas<br />
@@ -55,7 +56,7 @@
           </p>
           <img src="@/assets/atraeimagen.png" alt="Atrae" />
         </div>
-  
+
         <div class="info-block">
           <p>
             Organiza tus candidatos<br />
@@ -63,7 +64,7 @@
           </p>
           <img src="@/assets/organizaimagen.png" alt="Organiza" />
         </div>
-  
+
         <div class="info-block">
           <p>
             Verifica sus habilidades<br />
@@ -75,7 +76,7 @@
     </div>
   </ion-page>
 </template>
-  
+
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
@@ -91,11 +92,15 @@ export default defineComponent({
       router.push('/login')
     }
 
-    return { logout }
+    const irAOferta = () => {
+      router.push('/oferta')
+    }
+
+    return { logout, irAOferta }
   }
 })
 </script>
-  
+
 <style scoped>
 .dashboard-container {
   padding: 1.5rem;
@@ -137,9 +142,10 @@ export default defineComponent({
   margin: 0.8rem 0;
 }
 
-.publish-button {
+.publish-button,
+.history-button {
   display: block;
-  margin: 0 auto 1.5rem;
+  margin: 0.5rem auto;
   background-color: #a8e6cf;
   color: black;
   border: none;
@@ -147,6 +153,10 @@ export default defineComponent({
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.history-button {
+  background-color: #dcedc1;
 }
 
 .steps-section {
@@ -221,3 +231,4 @@ export default defineComponent({
   object-fit: contain;
 }
 </style>
+

@@ -133,9 +133,12 @@ export default defineComponent({
 .title {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #4f46e5;
+  color: #000;
   margin-bottom: 1rem;
   text-align: center;
+  padding: 0.7rem 2rem;
+  background-color: #007bff;
+  border-radius: 8px;
 }
 
 .form-wrapper {
@@ -193,11 +196,12 @@ export default defineComponent({
 .register-button:hover {
   background-color: #333;
 }
+
 .login-link {
   text-align: center;
   font-size: 0.9rem;
   margin-top: 1rem;
-  color: #000; 
+  color: #000;
 }
 </style>
 
