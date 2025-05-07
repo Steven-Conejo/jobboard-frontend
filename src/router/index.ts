@@ -30,6 +30,10 @@ const routes: Array<RouteRecordRaw> = [
     path: '/dashboard-reclutadores',
     component: () => import('@/views/DashboardReclutadores.vue')
   },
+  {
+    path: '/oferta',
+    component: () => import('@/views/Oferta.vue') 
+  },
 
   {
     path: '/dashboard-candidatos',

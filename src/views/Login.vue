@@ -16,12 +16,17 @@
         </router-link>
       </p>
     </div>
+
+    <footer class="footer">
+      Bolsa de Empleo SFC de Steven, Fabricio y Carlos de la UCR
+    </footer>
   </ion-page>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { IonPage, alertController } from '@ionic/vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'Login',
@@ -29,6 +34,7 @@ export default defineComponent({
   setup() {
     const email = ref('')
     const password = ref('')
+    const router = useRouter()
 
     const handleLogin = async () => {
       if (!email.value || !password.value) {
@@ -41,8 +47,8 @@ export default defineComponent({
         return
       }
 
-      // Aquí iría tu lógica de autenticación real
       await showAlert('✅ Inicio de sesión exitoso', `Bienvenido de nuevo, ${email.value.split('@')[0]} 👋`)
+      router.push('/dashboard-candidatos')
     }
 
     const showAlert = async (header: string, message: string) => {
@@ -108,5 +114,13 @@ export default defineComponent({
   color: #007bff;
   text-decoration: underline;
   cursor: pointer;
+}
+.footer {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #666;
+  padding: 1rem 0;
+  border-top: 1px solid #ddd;
+  background-color: #f8f8f8;
 }
 </style>

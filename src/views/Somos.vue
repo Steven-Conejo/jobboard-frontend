@@ -11,7 +11,6 @@
           SFC es una plataforma 100% costarricense dedicada exclusivamente a facilitar el encuentro entre personas que buscan empleo y empresas que deseen encontrar al candidato ideal. Nacida del espíritu emprendedor de tres universitarios de la Universidad de Costa Rica, sede de Guanacaste, Steven Conejo, Fabricio Álvarez y Carlos Jiménez, SFC fue fundada con una visión clara: revolucionar la forma en que se busca trabajo en Costa Rica.
         </p>
 
-        <!-- Imagen única en lugar de tres -->
         <div class="imagen-ancha">
           <img src="@/assets/imagennosotros.png" alt="Nosotros" />
         </div>
@@ -35,6 +34,11 @@
         <ion-button expand="block" router-link="/home">Volver</ion-button>
       </div>
     </ion-content>
+
+    <!-- Pie de página -->
+    <footer class="footer">
+      Bolsa de Empleo SFC de Steven, Fabricio y Carlos de la UCR
+    </footer>
   </ion-page>
 </template>
 
@@ -86,5 +90,14 @@ import { IonPage, IonContent, IonButton } from '@ionic/vue';
   height: auto;
   margin: 1rem auto;
   display: block;
+}
+
+.footer {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #666;
+  padding: 1rem 0;
+  border-top: 1px solid #ddd;
+  background-color: #f8f8f8;
 }
 </style>

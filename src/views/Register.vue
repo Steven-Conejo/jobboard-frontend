@@ -42,6 +42,10 @@
         </p>
       </div>
     </div>
+
+    <footer class="footer">
+      Bolsa de Empleo SFC de Steven, Fabricio y Carlos de la UCR
+    </footer>
   </ion-page>
 </template>
 
@@ -133,9 +137,12 @@ export default defineComponent({
 .title {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #4f46e5;
+  color: #000;
   margin-bottom: 1rem;
   text-align: center;
+  padding: 0.7rem 2rem;
+  background-color: #007bff;
+  border-radius: 8px;
 }
 
 .form-wrapper {
@@ -193,11 +200,22 @@ export default defineComponent({
 .register-button:hover {
   background-color: #333;
 }
+
 .login-link {
   text-align: center;
   font-size: 0.9rem;
   margin-top: 1rem;
-  color: #000; 
+  color: #000;
+}
+
+.footer {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #666;
+  padding: 1rem 0;
+  border-top: 1px solid #ddd;
+  background-color: #f8f8f8;
 }
 </style>
+
 
