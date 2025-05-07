@@ -26,6 +26,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { IonPage, alertController } from '@ionic/vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'Login',
@@ -33,6 +34,7 @@ export default defineComponent({
   setup() {
     const email = ref('')
     const password = ref('')
+    const router = useRouter()
 
     const handleLogin = async () => {
       if (!email.value || !password.value) {
@@ -44,7 +46,9 @@ export default defineComponent({
         await showAlert('📧 Correo inválido', 'Ingresa un correo electrónico válido.')
         return
       }
+
       await showAlert('✅ Inicio de sesión exitoso', `Bienvenido de nuevo, ${email.value.split('@')[0]} 👋`)
+      router.push('/dashboard-candidatos')
     }
 
     const showAlert = async (header: string, message: string) => {
@@ -111,7 +115,6 @@ export default defineComponent({
   text-decoration: underline;
   cursor: pointer;
 }
-
 .footer {
   text-align: center;
   font-size: 0.85rem;
