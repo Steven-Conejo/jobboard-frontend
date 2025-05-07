@@ -77,6 +77,9 @@
         <button @click="goToSomos" class="btn-somos">Quienes Somos</button>
       </div>
     </div>
+    <footer class="footer">
+      Bolsa de Empleo SFC de Steven, Fabricio y Carlos de la UCR
+    </footer>
   </ion-page>
 </template>
 
@@ -173,8 +176,8 @@ export default defineComponent({
   margin: 0 auto;
   font-family: sans-serif;
   overflow-y: auto;
-  height: 100vh;
   box-sizing: border-box;
+  min-height: calc(100vh - 60px); 
 }
 
 .top-bar {
@@ -295,6 +298,16 @@ h2 {
   cursor: pointer;
   color: black;
 }
+
+.footer {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #666;
+  padding: 1rem 0;
+  border-top: 1px solid #ddd;
+  background-color: #f8f8f8;
+}
 </style>
+
 
 

@@ -61,6 +61,10 @@
         <span class="link" @click="logout">🔓 Cerrar sesión</span>
       </div>
     </div>
+
+    <footer class="footer">
+      Bolsa de Empleo SFC de Steven, Fabricio y Carlos de la UCR
+    </footer>
   </ion-page>
 </template>
 
@@ -230,4 +234,14 @@ export default defineComponent({
 .link {
   cursor: pointer;
 }
+
+.footer {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #666;
+  padding: 1rem 0;
+  border-top: 1px solid #ddd;
+  background-color: #f8f8f8;
+}
 </style>
+
