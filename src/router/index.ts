@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from '@ionic/vue-router'; 
-import { RouteRecordRaw } from 'vue-router'; 
+import { createRouter, createWebHistory } from '@ionic/vue-router'
+import { RouteRecordRaw } from 'vue-router'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/register',
-    component: () => import('@/views/Register.vue') 
+    component: () => import('@/views/Register.vue')
   },
   {
     path: '/home',
@@ -32,18 +32,29 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/oferta',
-    component: () => import('@/views/Oferta.vue') 
+    component: () => import('@/views/Oferta.vue')
   },
-
   {
     path: '/dashboard-candidatos',
     component: () => import('@/views/DashboardCandidatos.vue')
+  },
+  {
+    path: '/historial-ofertas',
+    component: () => import('@/views/HistorialOfertas.vue')
+  },
+  {
+    path: '/editar-oferta/:id',
+    component: () => import('@/views/EditarOferta.vue')
+  },
+  {
+    path: '/candidatos/:id',
+    component: () => import('@/views/CandidatosOferta.vue')
   }
-];
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
-});
+})
 
-export default router;
+export default router

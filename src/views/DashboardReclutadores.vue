@@ -14,7 +14,7 @@
       </p>
 
       <button class="publish-button" @click="irAOferta">Publicar una Oferta</button>
-      <button class="history-button">Ver historial de ofertas</button>
+      <button class="history-button" @click="verHistorial">Ver historial de ofertas</button>
 
       <div class="steps-section">
         <div class="steps-list">
@@ -100,7 +100,11 @@ export default defineComponent({
       router.push('/oferta')
     }
 
-    return { logout, irAOferta }
+    const verHistorial = () => {
+      router.push('/historial-ofertas')
+    }
+
+    return { logout, irAOferta, verHistorial }
   }
 })
 </script>
