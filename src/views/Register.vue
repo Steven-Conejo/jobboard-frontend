@@ -7,33 +7,75 @@
       <div class="form-wrapper">
         <form class="register-form" @submit.prevent="handleRegister">
           <label for="email">E-mail:</label>
-          <input v-model="email" id="email" type="email" placeholder="Escriba su correo electrónico" class="input" />
+          <input
+            v-model="email"
+            id="email"
+            type="email"
+            placeholder="Escriba su correo electrónico"
+            class="input"
+          />
 
           <label for="password">Contraseña:</label>
-          <input v-model="password" id="password" type="password" placeholder="Escriba su contraseña" class="input" />
+          <input
+            v-model="password"
+            id="password"
+            type="password"
+            placeholder="Escriba su contraseña (8–20 caracteres)"
+            class="input"
+          />
 
           <label for="confirmPassword">Confirmar Contraseña:</label>
-          <input v-model="confirmPassword" id="confirmPassword" type="password" placeholder="Confirme su contraseña" class="input" />
+          <input
+            v-model="confirmPassword"
+            id="confirmPassword"
+            type="password"
+            placeholder="Confirme su contraseña"
+            class="input"
+          />
 
           <label for="nombre">Nombre:</label>
-          <input v-model="nombre" id="nombre" type="text" placeholder="Digite su nombre" class="input" />
+          <input
+            v-model="nombre"
+            id="nombre"
+            type="text"
+            placeholder="Digite su nombre"
+            class="input"
+          />
 
           <label for="apellidos">Apellidos:</label>
-          <input v-model="apellidos" id="apellidos" type="text" placeholder="Digite sus dos apellidos" class="input" />
+          <input
+            v-model="apellidos"
+            id="apellidos"
+            type="text"
+            placeholder="Digite sus apellidos"
+            class="input"
+          />
 
           <label>Deseas registrarte como:</label>
           <div class="role-options">
             <label>
-              <input v-model="rol" type="radio" name="role" value="candidato" />
+              <input
+                v-model.number="role"
+                type="radio"
+                name="role"
+                :value="1"
+              />
               Candidato
             </label>
             <label>
-              <input v-model="rol" type="radio" name="role" value="reclutador" />
+              <input
+                v-model.number="role"
+                type="radio"
+                name="role"
+                :value="2"
+              />
               Reclutador
             </label>
           </div>
 
-          <button type="submit" class="register-button">Registrar</button>
+          <button type="submit" class="register-button">
+            Registrar
+          </button>
         </form>
 
         <p class="login-link">
@@ -53,6 +95,7 @@
 import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { alertController, IonPage } from '@ionic/vue'
+import apiClient from '@/services/apiClient'
 
 export default defineComponent({
   name: 'Register',
@@ -63,46 +106,89 @@ export default defineComponent({
     const confirmPassword = ref('')
     const nombre = ref('')
     const apellidos = ref('')
-    const rol = ref('candidato')
-
+    const role = ref<number>(1) // 1 = candidato, 2 = reclutador
     const router = useRouter()
 
-    const showAlert = async (title: string, message: string) => {
+    const showAlert = async (header: string, message: string) => {
       const alert = await alertController.create({
-        header: title,
-        message: message,
+        header,
+        message,
         buttons: ['OK']
       })
       await alert.present()
     }
 
-    const validateEmail = (email: string) => {
-      const re = /\S+@\S+\.\S+/
-      return re.test(email)
-    }
+    const validateEmail = (e: string) => /\S+@\S+\.\S+/.test(e)
 
     const handleRegister = async () => {
-      if (!email.value || !password.value || !confirmPassword.value || !nombre.value || !apellidos.value) {
-        await showAlert('⚠️ Campos vacíos', 'Por favor llena todos los campos para continuar.')
-        return
+      // Validaciones en el cliente
+      if (
+        !email.value ||
+        !password.value ||
+        !confirmPassword.value ||
+        !nombre.value ||
+        !apellidos.value
+      ) {
+        return showAlert(
+          '⚠️ Campos vacíos',
+          'Por favor completa todos los campos.'
+        )
       }
-
       if (!validateEmail(email.value)) {
-        await showAlert('📧 Correo inválido', 'Por favor escribe un correo electrónico válido.')
-        return
+        return showAlert(
+          '📧 Correo inválido',
+          'Escribe un correo electrónico válido.'
+        )
       }
-
       if (password.value !== confirmPassword.value) {
-        await showAlert('🔁 Contraseñas no coinciden', 'La contraseña y su confirmación deben ser iguales.')
-        return
+        return showAlert(
+          '🔁 Contraseñas no coinciden',
+          'Asegúrate de que coincidan.'
+        )
       }
 
-      await showAlert('✅ Registro exitoso', `Bienvenido/a, ${nombre.value} 🎉`)
+      try {
+        // Llamada al backend
+        const resp = await apiClient.post('/register', {
+          email: email.value,
+          password: password.value,
+          password_confirmation: confirmPassword.value,
+          first_name: nombre.value,
+          last_name: apellidos.value,
+          role: role.value
+        })
 
-      if (rol.value === 'candidato') {
-        router.push('/dashboard-candidatos')
-      } else {
-        router.push('/dashboard-reclutadores') 
+        console.log('Registro exitoso:', resp.data)
+        await showAlert(
+          '✅ Registro exitoso',
+          `Bienvenido/a, ${nombre.value}!`
+        )
+
+        // Redirigir según rol
+        router.push(
+          role.value === 1
+            ? '/dashboard-candidatos'
+            : '/dashboard-reclutadores'
+        )
+      } catch (err: any) {
+        
+        const status = err.response?.status
+        const data = err.response?.data
+
+        console.error('Error al registrar:', status, data)
+
+       
+        if (status === 400 && data && typeof data === 'object') {
+          const msgs = Object
+            .values(data)         
+            .flat()               
+            .join('\n')           
+          return showAlert('❌ Errores de validación', msgs)
+        }
+
+       
+        const msg = data?.message || err.message || 'Error al registrar'
+        await showAlert('❌ Error al registrar', msg)
       }
     }
 
@@ -112,7 +198,7 @@ export default defineComponent({
       confirmPassword,
       nombre,
       apellidos,
-      rol,
+      role,
       handleRegister
     }
   }
@@ -217,5 +303,3 @@ export default defineComponent({
   background-color: #f8f8f8;
 }
 </style>
-
-
