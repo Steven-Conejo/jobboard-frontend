@@ -4,7 +4,9 @@
       <div class="dashboard-container">
         <div class="top-bar">
           <img src="@/assets/logo.png" alt="Logo" class="logo" />
-          <button @click="logout" class="logout-button">🔓 Cerrar sesión</button>
+          <ion-button color="danger" @click="logout" size="small" fill="clear">
+            🔓 Cerrar sesión
+          </ion-button>
         </div>
 
         <h2 class="headline">Historial de Ofertas Publicadas</h2>
@@ -34,9 +36,15 @@
                 <td>₡{{ oferta.salary }}</td>
                 <td>{{ oferta.category }}</td>
                 <td class="acciones">
-                  <button @click="editarOferta(oferta.id)" title="Editar">✏️</button>
-                  <button @click="confirmarEliminacion(oferta.id)" title="Eliminar">🗑️</button>
-                  <button @click="verCandidatos(oferta.id)" title="Ver Candidatos">👤</button>
+                  <ion-button size="small" color="primary" @click="editarOferta(oferta.id)" title="Editar">
+                    ✏️
+                  </ion-button>
+                  <ion-button size="small" color="danger" @click="confirmarEliminacion(oferta.id)" title="Eliminar">
+                    🗑️
+                  </ion-button>
+                  <ion-button size="small" color="medium" @click="verCandidatos(oferta.id)" title="Ver Candidatos">
+                    👤
+                  </ion-button>
                 </td>
               </tr>
             </tbody>
@@ -49,8 +57,8 @@
             <h3>¿Eliminar esta oferta?</h3>
             <p>Esta acción no se puede deshacer. ¿Estás seguro?</p>
             <div class="modal-actions">
-              <button class="cancelar" @click="cancelarEliminacion">Cancelar</button>
-              <button class="confirmar" @click="eliminarOfertaConfirmada">Eliminar</button>
+              <ion-button class="cancelar" fill="outline" @click="cancelarEliminacion">Cancelar</ion-button>
+              <ion-button class="confirmar" color="danger" @click="eliminarOfertaConfirmada">Eliminar</ion-button>
             </div>
           </div>
         </div>
@@ -84,18 +92,18 @@ export default defineComponent({
         const resp = await apiClient.get('/user')
         userRole.value = resp.data.role
         if (userRole.value !== 2) {
-          router.replace('/login')
+          await router.replace('/login')
         } else {
           await obtenerOfertas()
         }
       } catch {
-        router.replace('/login')
+        await router.replace('/login')
       }
     }
 
-    const logout = () => {
+    const logout = async () => {
       localStorage.removeItem('auth_token')
-      router.replace('/login')
+      await router.replace('/login')
     }
 
     const obtenerOfertas = async () => {
@@ -109,8 +117,13 @@ export default defineComponent({
       }
     }
 
-    const editarOferta = (id: number) => router.push(`/editar-oferta/${id}`)
-    const verCandidatos = (id: number) => router.push(`/candidatos/${id}`)
+    const editarOferta = (id: number) => {
+      router.push({ name: 'EditarOferta', params: { id } })
+    }
+
+    const verCandidatos = (id: number) => {
+      router.push({ name: 'CandidatosOferta', params: { id } })
+    }
 
     const confirmarEliminacion = (id: number) => {
       ofertaAEliminar.value = id
