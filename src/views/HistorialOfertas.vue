@@ -4,9 +4,15 @@
       <div class="dashboard-container">
         <div class="top-bar">
           <img src="@/assets/logo.png" alt="Logo" class="logo" />
+<<<<<<< HEAD
           <button @click="logout" class="logout-button">
             🔓 Cerrar sesión
           </button>
+=======
+          <ion-button color="danger" @click="logout" size="small" fill="clear">
+            🔓 Cerrar sesión
+          </ion-button>
+>>>>>>> 97d03ab392580b96d983644abfa58e885bbe3ebb
         </div>
 
         <div class="table-container">
@@ -38,9 +44,21 @@
                 <td>₡{{ oferta.salary.toLocaleString() }}</td>
                 <td>{{ oferta.category }}</td>
                 <td class="acciones">
+<<<<<<< HEAD
                   <button @click="abrirEditor(oferta)" class="btn-edit" title="Editar">✏️</button>
                   <button @click="confirmarEliminacion(oferta.id)" class="btn-delete" title="Eliminar">🗑️</button>
                   <button @click="verCandidatos(oferta.id)" class="btn-candidates" title="Ver Candidatos">👤</button>
+=======
+                  <ion-button size="small" color="primary" @click="editarOferta(oferta.id)" title="Editar">
+                    ✏️
+                  </ion-button>
+                  <ion-button size="small" color="danger" @click="confirmarEliminacion(oferta.id)" title="Eliminar">
+                    🗑️
+                  </ion-button>
+                  <ion-button size="small" color="medium" @click="verCandidatos(oferta.id)" title="Ver Candidatos">
+                    👤
+                  </ion-button>
+>>>>>>> 97d03ab392580b96d983644abfa58e885bbe3ebb
                 </td>
               </tr>
             </tbody>
@@ -59,12 +77,17 @@
               <p class="warning-text"><i class="fas fa-exclamation-circle"></i> Esta acción no se puede deshacer.</p>
             </div>
             <div class="modal-actions">
+<<<<<<< HEAD
               <button @click="cancelarEliminacion" class="btn btn-cancel">
                 Cancelar
               </button>
               <button @click="eliminarOfertaConfirmada" class="btn btn-delete">
                 Eliminar
               </button>
+=======
+              <ion-button class="cancelar" fill="outline" @click="cancelarEliminacion">Cancelar</ion-button>
+              <ion-button class="confirmar" color="danger" @click="eliminarOfertaConfirmada">Eliminar</ion-button>
+>>>>>>> 97d03ab392580b96d983644abfa58e885bbe3ebb
             </div>
           </div>
         </div>
@@ -165,15 +188,16 @@ export default defineComponent({
         const resp = await apiClient.get('/user')
         userRole.value = resp.data.role
         if (userRole.value !== 2) {
-          router.replace('/login')
+          await router.replace('/login')
         } else {
           await obtenerOfertas()
         }
       } catch {
-        router.replace('/login')
+        await router.replace('/login')
       }
     }
 
+<<<<<<< HEAD
     onIonViewWillEnter(() => {
       if (userRole.value === 2) {
         return obtenerOfertas()
@@ -183,14 +207,28 @@ export default defineComponent({
     validarAcceso()
 
     const logout = () => {
+=======
+    const logout = async () => {
+>>>>>>> 97d03ab392580b96d983644abfa58e885bbe3ebb
       localStorage.removeItem('auth_token')
-      router.replace('/login')
+      await router.replace('/login')
     }
 
     const verCandidatos = (id: number) => {
       router.push(`/candidatos/${id}`)
     }
 
+<<<<<<< HEAD
+=======
+    const editarOferta = (id: number) => {
+      router.push({ name: 'EditarOferta', params: { id } })
+    }
+
+    const verCandidatos = (id: number) => {
+      router.push({ name: 'CandidatosOferta', params: { id } })
+    }
+
+>>>>>>> 97d03ab392580b96d983644abfa58e885bbe3ebb
     const confirmarEliminacion = (id: number) => {
       ofertaAEliminar.value = id
       mostrarModal.value = true
