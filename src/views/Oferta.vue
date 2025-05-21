@@ -25,7 +25,11 @@
 
         <ion-item>
           <ion-label position="stacked">Salario</ion-label>
-          <ion-input v-model.number="oferta.salario" type="number" required></ion-input>
+          <ion-input
+            v-model.number="oferta.salario"
+            type="number"
+            required
+          ></ion-input>
         </ion-item>
 
         <div class="form-group">
@@ -38,10 +42,13 @@
               @focus="showCategoriaOptions = true"
               @blur="hideCategoriaOptions"
               class="autocomplete-input"
-              placeholder="Escribe o selecciona una categoría"
+              placeholder="Escriba o seleccione una categoría"
               required
             />
-            <div v-if="showCategoriaOptions && filteredCategorias.length" class="autocomplete-list">
+            <div
+              v-if="showCategoriaOptions && filteredCategorias.length"
+              class="autocomplete-list"
+            >
               <div
                 class="autocomplete-item"
                 v-for="(cat, i) in filteredCategorias"
@@ -56,6 +63,16 @@
 
         <ion-button expand="block" type="submit" class="ion-margin-top">
           Registrar Oferta
+        </ion-button>
+
+    
+        <ion-button
+          expand="block"
+          color="medium"
+          class="ion-margin-top"
+          @click="goBack"
+        >
+          ← Regresar
         </ion-button>
       </form>
     </ion-content>
@@ -86,27 +103,38 @@ import apiClient from '@/services/apiClient'
 
 const router = useRouter()
 
+// Estado inicial del formulario
+const initialOferta = {
+  titulo: '',
+  descripcion: '',
+  ubicacion: '',
+  salario: null as number | null,
+  categoria: ''
+}
+// Estado reactivo para la oferta
+const oferta = ref({ ...initialOferta })
+
+
+const clearFields = () => {
+  Object.assign(oferta.value, initialOferta)
+}
+
 // Autocomplete categorías
 const categorias = [
   'Recepcionista','Contador','Asistente administrativo','Ingeniero industrial',
   'Técnico en electrónica','Desarrollador web','Secretaria','Diseñador gráfico',
   'Operario de producción','Agente de servicio al cliente','Auxiliar contable',
   'Mecánico automotriz','Cocinero','Guardia de seguridad','Profesor de inglés',
-  'Auxiliar de bodega'
+  'Auxiliar de bodega', 'Otra'
 ]
-const oferta = ref({
-  titulo: '',
-  descripcion: '',
-  ubicacion: '',
-  salario: null as number|null,
-  categoria: ''
-})
 const showCategoriaOptions = ref(false)
 const filteredCategorias = ref<string[]>([...categorias])
 
 const filterCategorias = () => {
   const s = oferta.value.categoria.toLowerCase()
-  filteredCategorias.value = categorias.filter(c => c.toLowerCase().includes(s))
+  filteredCategorias.value = categorias.filter(c =>
+    c.toLowerCase().includes(s)
+  )
 }
 const selectCategoria = (cat: string) => {
   oferta.value.categoria = cat
@@ -116,7 +144,7 @@ const hideCategoriaOptions = () => {
   setTimeout(() => { showCategoriaOptions.value = false }, 100)
 }
 
-// Etiquetas para traducir errores
+
 const fieldLabels: Record<string,string> = {
   job_title: 'Título del Puesto',
   description: 'Descripción',
@@ -140,18 +168,18 @@ const translateError = (field:string, msg:string) => {
   return msg
 }
 
-// Usuario autenticado y rol
+// Verificar rol de usuario
 const userRole = ref<number|null>(null)
 onMounted(async () => {
   try {
     const resp = await apiClient.get('/user')
     userRole.value = resp.data.role
   } catch {
-    // no autenticado → redirigir a login
     router.replace('/login')
   }
 })
 
+// Función para crear oferta y limpiar campos
 const registrarOferta = async () => {
   if (userRole.value !== 2) {
     return alertController.create({
@@ -161,7 +189,6 @@ const registrarOferta = async () => {
     }).then(a => a.present())
   }
 
-  // llamada al API
   try {
     const payload = {
       job_title: oferta.value.titulo,
@@ -178,13 +205,12 @@ const registrarOferta = async () => {
       buttons: ['OK']
     }).then(a => a.present())
 
+    clearFields()
     router.push('/dashboard-reclutadores')
-  } catch (err:any) {
+  } catch (err: any) {
     const status = err.response?.status
     const data = err.response?.data
 
-
-    // validación 422/400
     if (status === 422 || status === 400) {
       const msgs: string[] = []
       Object.entries(data.errors || data).forEach(([f, arr]) => {
@@ -196,7 +222,7 @@ const registrarOferta = async () => {
         buttons: ['OK']
       }).then(a => a.present())
     }
-  
+
     const msg = data?.message || 'Error al crear la oferta.'
     return alertController.create({
       header: '❌ Error',
@@ -205,26 +231,69 @@ const registrarOferta = async () => {
     }).then(a => a.present())
   }
 }
+
+
+const goBack = () => {
+  clearFields()
+  router.push('/dashboard-reclutadores')
+}
 </script>
 
+
 <style scoped>
-form { display: flex; flex-direction: column; gap: 1rem; }
-.form-group { margin: 1rem 0; position: relative; }
-.autocomplete-container { position: relative; width: 100%; }
-.autocomplete-input {
-  width: 100%; padding: 0.75rem; font-size: 1rem;
-  border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box;
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
+
+.form-group {
+  margin: 1rem 0;
+  position: relative;
+}
+
+.autocomplete-container {
+  position: relative;
+  width: 100%;
+}
+
+.autocomplete-input {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
 .autocomplete-list {
-  background: #fff; color: #000; border: 1px solid #ccc;
-  border-radius: 6px; max-height: 160px; overflow-y: auto;
-  position: absolute; z-index: 10; width: 100%;
+  background: #fff;
+  color: #000;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  max-height: 160px;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 10;
+  width: 100%;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
-.autocomplete-item { padding: 0.6rem 0.8rem; cursor: pointer; }
-.autocomplete-item:hover { background: #f0f0f0; }
+
+.autocomplete-item {
+  padding: 0.6rem 0.8rem;
+  cursor: pointer;
+}
+
+.autocomplete-item:hover {
+  background: #f0f0f0;
+}
+
 .footer {
-  text-align: center; font-size: 0.85rem; color: #666;
-  padding: 1rem 0; border-top: 1px solid #ddd; background: #f8f8f8;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #666;
+  padding: 1rem 0;
+  border-top: 1px solid #ddd;
+  background: #f8f8f8;
 }
 </style>

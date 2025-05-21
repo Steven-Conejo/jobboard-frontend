@@ -43,10 +43,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/HistorialOfertas.vue')
   },
   {
-    path: '/editar-oferta/:id',
-    component: () => import('@/views/EditarOferta.vue')
-  },
-  {
     path: '/candidatos/:id',
     component: () => import('@/views/CandidatosOferta.vue')
   }
