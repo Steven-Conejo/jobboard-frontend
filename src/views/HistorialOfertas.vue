@@ -47,7 +47,7 @@
           </table>
         </div>
 
-        <!-- Confirmación de eliminación MEJORADA -->
+     
         <div v-if="mostrarModal" class="modal-backdrop">
           <div class="modal-content confirmation-modal">
             <div class="modal-header">
@@ -69,7 +69,7 @@
           </div>
         </div>
 
-        <!-- Editor modal -->
+     
         <div v-if="editarModal" class="modal-backdrop">
           <div class="modal-content edit-modal">
             <div class="modal-header">
@@ -478,7 +478,7 @@ export default defineComponent({
   opacity: 1;
 }
 
-/* Modal de confirmación MEJORADO */
+
 .confirmation-modal {
   max-width: 450px;
   text-align: center;
@@ -562,7 +562,6 @@ export default defineComponent({
   background: #c82333;
 }
 
-/* Modal de edición */
 .edit-modal .edit-form {
   padding: 1.5rem;
 }
