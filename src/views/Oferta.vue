@@ -103,7 +103,7 @@ import apiClient from '@/services/apiClient'
 
 const router = useRouter()
 
-// Estado inicial del formulario
+
 const initialOferta = {
   titulo: '',
   descripcion: '',
@@ -119,7 +119,7 @@ const clearFields = () => {
   Object.assign(oferta.value, initialOferta)
 }
 
-// Autocomplete categorías
+
 const categorias = [
   'Recepcionista','Contador','Asistente administrativo','Ingeniero industrial',
   'Técnico en electrónica','Desarrollador web','Secretaria','Diseñador gráfico',
@@ -179,7 +179,7 @@ onMounted(async () => {
   }
 })
 
-// Función para crear oferta y limpiar campos
+
 const registrarOferta = async () => {
   if (userRole.value !== 2) {
     return alertController.create({
